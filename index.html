@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SYS FOE | Systems and Solutions FOE</title>
+  <meta name="description" content="SYS FOE: desarrollo de sistemas, ciberseguridad, redes y gobernanza de IA desde Tegucigalpa, Honduras.">
+  <meta name="theme-color" content="#1574c2">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+  <script>
+    /* Aplica el tema guardado antes de pintar para evitar parpadeo */
+    (function () {
+      var tema = null;
+      try { tema = localStorage.getItem('foe-tema'); } catch (e) {}
+      if (!tema) { tema = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+      document.documentElement.setAttribute('data-bs-theme', tema);
+    })();
+  </script>
+
+  <!-- Los estilos propios viven en src/style.css (Vite los compila desde main.ts) -->
+</head>
+
+<body>
+  <a class="visually-hidden-focusable position-absolute top-0 start-0 m-2 p-2 bg-body" href="#contenido">Saltar al contenido</a>
+
+  <!-- Definiciones reutilizables del logo (no se muestran) -->
+  <svg width="0" height="0" class="position-absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <g id="foe-mark">
+        <path class="logo-blue" transform="matrix(0.93290107,0,0,1,5.8917374,0)"
+              d="m 64.382363,127 a 18.698005,17.443389 0 0 1 8.748258,7.29981 H 87.973799 V 127 H 67.354212 Z m -6.382411,0.0212 v 6.90087 a 9.7842284,9.1277172 0 0 1 0.249824,0.0295 9.4477897,9.0460033 0 0 0 -0.249824,-0.004 v 18.09192 a 9.4477897,9.0460033 0 0 0 0.26478,-0.004 9.7842284,9.1277172 0 0 1 -0.26478,0.031 v 6.90087 a 17.155908,16.004765 0 0 0 13.317094,-7.26778 h -3.962834 v -5.60689 h 6.397921 a 17.155908,16.004765 0 0 0 0.324605,-3.09852 17.155908,16.004765 0 0 0 -0.472505,-3.73052 h -6.250021 v -4.96404 h 3.970589 a 17.155908,16.004765 0 0 0 -13.324849,-7.27862 z m 17.186313,12.24266 a 18.698005,17.443389 0 0 1 0.432621,3.73052 18.698005,17.443389 0 0 1 -0.297462,3.09852 h 9.709885 v -6.82904 z m -2.062291,12.43593 a 18.698005,17.443389 0 0 1 -8.769861,7.30033 h 3.000099 20.619587 v -7.30033 z"/>
+        <path class="logo-navy"
+              d="m 30.000236,127 v 32.00011 h 0.999939 0.419613 7.401098 v -12.90722 h 3.006535 c -0.1846,-1.02251 -0.27747,-2.05948 -0.277502,-3.09852 4.1e-5,-1.25423 0.135355,-2.50479 0.403593,-3.73 h -3.132626 v -4.95939 h 5.047237 c 1.866342,-3.24859 4.729034,-5.80995 8.16436,-7.30498 h -7.808309 -0.960148 -2.165243 -2.335258 -0.409794 -6.933943 -0.419613 z"/>
+        <path class="logo-navy"
+              d="M 58.993298,126.98966 A 16.004765,16.004765 0 0 0 58.415039,127 h 1.156519 a 16.004765,16.004765 0 0 0 -0.57826,-0.0103 z m -0.993221,0.0305 A 16.004765,16.004765 0 0 0 42.98859,142.99438 16.004765,16.004765 0 0 0 58.000077,158.9686 v -6.90087 a 9.1277172,9.1277172 0 0 1 -8.134387,-9.07335 9.1277172,9.1277172 0 0 1 8.134387,-9.07335 z m 1.999878,10e-4 v 6.90087 a 9.1277172,9.1277172 0 0 1 8.120952,9.07231 9.1277172,9.1277172 0 0 1 -8.120952,9.07232 v 6.90087 A 16.004765,16.004765 0 0 0 74.998006,142.99437 16.004765,16.004765 0 0 0 59.999955,127.02119 Z"/>
+      </g>
+      <!-- 3, 6 y 0 con la misma construcción geométrica de la O (trazo de 6.9, corte central de 2) -->
+      <g id="foe-360">
+        <path class="logo-360" d="M 95.45 130.45 H 108.275 A 6.275 6.275 0 0 1 108.275 143 H 100.45 M 108.275 143 A 6.275 6.275 0 0 1 108.275 155.55 H 95.45"/>
+        <path class="logo-360" d="M 123.45 149.275 A 9.55 6.275 0 0 0 142.55 149.275 A 9.55 6.275 0 0 0 123.45 149.275 Z M 123.45 149.275 V 140 A 9.55 9.55 0 0 1 142.55 140"/>
+        <path class="logo-360" d="M 160 130.45 A 9.55 12.55 0 0 0 160 155.55 M 162 130.45 A 9.55 12.55 0 0 1 162 155.55"/>
+        <circle class="logo-deg" cx="181" cy="132" r="3.6"/>
+      </g>
+    </defs>
+  </svg>
+
+  <!-- ===== Navegación ===== -->
+  <nav class="navbar navbar-expand-lg bg-body sticky-top border-bottom" aria-label="Navegación principal">
+    <div class="container">
+      <a class="navbar-brand" href="#inicio" aria-label="SYS FOE, Systems and Solutions FOE - inicio">
+        <svg class="logo-nav" viewBox="28 124 136 38" role="img" aria-label="Logotipo SYS FOE">
+          <use href="#foe-mark"/>
+          <rect class="logo-beige" x="94" y="127" width="1" height="32"/>
+          <text class="logo-text" transform="scale(1.0394892,0.96201095)" x="94.157692" y="146.06523">SYSTEMS AND</text>
+          <text class="logo-text" transform="scale(1.0394892,0.96201095)" x="94.157692" y="155.86194">SOLUTIONS FOE</text>
+        </svg>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+              aria-controls="menu" aria-expanded="false" aria-label="Mostrar u ocultar el menú">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="#portafolio">Portafolio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#gobernanza">Gobernanza de IA</a></li>
+          <li class="nav-item"><a class="nav-link" href="#metodo">Cómo trabajamos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
+          <li class="nav-item ms-lg-2"><a class="btn btn-foe btn-sm" href="#contacto">Contáctanos</a></li>
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+            <button id="btn-tema" class="btn btn-outline-secondary btn-sm" type="button" aria-pressed="false">
+              Modo oscuro
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="contenido">
+
+    <!-- ===== Inicio ===== -->
+    <section id="inicio" class="hero py-5">
+      <div class="container py-lg-4">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-6">
+            <p class="etiqueta mb-2">Tegucigalpa, Honduras</p>
+            <h1 class="display-4 fw-bold titulo-seccion">Tecnología con <span class="text-primary">IA responsable</span> para tu empresa</h1>
+            <p class="lead text-body-secondary my-4">
+              Desarrollamos sistemas, protegemos tu información, conectamos tus redes y te ayudamos a adoptar
+              la inteligencia artificial con políticas claras de gobernanza.
+            </p>
+            <div class="d-flex flex-wrap gap-2">
+              <a class="btn btn-foe btn-lg" href="#contacto">Hablemos de tu proyecto</a>
+              <a class="btn btn-outline-foe btn-lg" href="#portafolio">Ver portafolio</a>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <!-- Video: animación del logo (Bootstrap: ratio + utilidades) -->
+            <div class="ratio ratio-16x9 rounded-4 overflow-hidden shadow">
+              <video id="videoFoe" controls playsinline preload="metadata" poster="/video/poster.jpg"
+                     aria-label="Animación del logo de SYS FOE">
+                <source src="/video/FOE_logo_animado.mp4" type="video/mp4">
+                Tu navegador no admite video HTML5.
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Servicios ===== -->
+    <section id="servicios" class="py-5">
+      <div class="container py-lg-4">
+        <div class="text-center mb-5">
+          <p class="etiqueta mb-2">Servicios</p>
+          <h2 class="fw-bold titulo-seccion">Todas las áreas de TI, en un solo equipo</h2>
+          <p class="text-body-secondary mx-auto" style="max-width: 40rem;">Empezamos por el desarrollo y el uso correcto de la inteligencia artificial, y crecemos contigo hacia el resto.</p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3">
+            <article class="card h-100 tarjeta">
+              <div class="card-body">
+                <svg class="icono-servicio mb-3" viewBox="0 0 56 56" aria-hidden="true">
+                  <rect class="i-bg" width="56" height="56" rx="14"/>
+                  <path class="i-line" d="M22 20 12 28l10 8M34 20l10 8-10 8M30 16l-4 24"/>
+                </svg>
+                <h3 class="h5">Desarrollo de sistemas</h3>
+                <p class="card-text text-body-secondary">Sistemas a la medida: puntos de venta, inventarios, facturación, aplicaciones móviles y web.</p>
+              </div>
+              <div class="card-footer bg-transparent border-0 pb-3"><span class="badge text-bg-success">Disponible</span></div>
+            </article>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <article class="card h-100 tarjeta">
+              <div class="card-body">
+                <svg class="icono-servicio mb-3" viewBox="0 0 56 56" aria-hidden="true">
+                  <rect class="i-bg" width="56" height="56" rx="14"/>
+                  <circle class="i-line" cx="28" cy="28" r="6"/>
+                  <path class="i-line" d="M28 12v6M28 38v6M12 28h6M38 28h6M17 17l4 4M35 35l4 4M39 17l-4 4M21 35l-4 4"/>
+                </svg>
+                <h3 class="h5">Gobernanza de IA</h3>
+                <p class="card-text text-body-secondary">Diagnóstico, políticas, capacitación y seguimiento para adoptar la IA con control y responsabilidad.</p>
+              </div>
+              <div class="card-footer bg-transparent border-0 pb-3"><span class="badge text-bg-success">Disponible</span></div>
+            </article>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <article class="card h-100 tarjeta">
+              <div class="card-body">
+                <svg class="icono-servicio mb-3" viewBox="0 0 56 56" aria-hidden="true">
+                  <rect class="i-bg" width="56" height="56" rx="14"/>
+                  <path class="i-line" d="M28 11 41 16v10c0 9-6 15-13 19-7-4-13-10-13-19V16z"/>
+                  <path class="i-line" d="m22 28 4 4 8-9"/>
+                </svg>
+                <h3 class="h5">Ciberseguridad</h3>
+                <p class="card-text text-body-secondary">Revisión de seguridad, buenas prácticas de desarrollo y protección de datos de tu negocio.</p>
+              </div>
+              <div class="card-footer bg-transparent border-0 pb-3"><span class="badge bg-primary-subtle text-primary-emphasis border border-primary-subtle">Disponible bajo proyecto</span></div>
+            </article>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <article class="card h-100 tarjeta">
+              <div class="card-body">
+                <svg class="icono-servicio mb-3" viewBox="0 0 56 56" aria-hidden="true">
+                  <rect class="i-bg" width="56" height="56" rx="14"/>
+                  <circle class="i-light" cx="28" cy="15" r="5"/><circle class="i-light" cx="14" cy="40" r="5"/><circle class="i-light" cx="42" cy="40" r="5"/>
+                  <path class="i-line" d="M28 20 16 36M28 20l12 16M19 40h18"/>
+                </svg>
+                <h3 class="h5">Redes e infraestructura</h3>
+                <p class="card-text text-body-secondary">Diseño y configuración de redes, cableado, Wi-Fi y servidores para oficinas y sucursales.</p>
+              </div>
+              <div class="card-footer bg-transparent border-0 pb-3"><span class="badge bg-primary-subtle text-primary-emphasis border border-primary-subtle">Disponible bajo proyecto</span></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Portafolio ===== -->
+    <section id="portafolio" class="py-5 seccion-suave">
+      <div class="container py-lg-4">
+        <div class="text-center mb-5">
+          <p class="etiqueta mb-2">Portafolio</p>
+          <h2 class="fw-bold titulo-seccion">Sistemas que ya estamos construyendo</h2>
+          <p class="text-body-secondary mx-auto" style="max-width: 40rem;">Las imágenes son ilustraciones de referencia, no capturas de las aplicaciones reales.</p>
+        </div>
+
+        <!-- FOE360 -->
+        <div class="row align-items-center g-5 mb-5">
+          <div class="col-lg-6">
+            <!-- Ilustración: punto de venta e inventario -->
+            <svg class="ill" viewBox="0 0 400 300" role="img" aria-label="Ilustración de un punto de venta con productos, factura y código de barras">
+              <rect class="i-bg" width="400" height="300" rx="24"/>
+              <rect class="i-navy" x="40" y="40" width="230" height="150" rx="12"/>
+              <rect class="i-panel" x="48" y="48" width="214" height="134" rx="6"/>
+              <rect class="i-navy" x="136" y="190" width="38" height="28" />
+              <rect class="i-navy" x="104" y="216" width="102" height="10" rx="5"/>
+              <g>
+                <rect class="i-light" x="58" y="58" width="46" height="36" rx="6"/>
+                <rect class="i-blue" x="112" y="58" width="46" height="36" rx="6"/>
+                <rect class="i-beige" x="166" y="58" width="46" height="36" rx="6"/>
+                <rect class="i-blue" x="58" y="102" width="46" height="36" rx="6"/>
+                <rect class="i-beige" x="112" y="102" width="46" height="36" rx="6"/>
+                <rect class="i-light" x="166" y="102" width="46" height="36" rx="6"/>
+                <rect class="i-navy" x="58" y="148" width="154" height="24" rx="6"/>
+                <rect class="i-white" x="68" y="157" width="50" height="6" rx="3"/>
+              </g>
+              <rect class="i-panel" x="226" y="58" width="30" height="112" rx="4"/>
+              <rect class="i-panel" x="290" y="50" width="76" height="190" rx="6"/>
+              <rect class="i-blue" x="300" y="62" width="56" height="8" rx="4"/>
+              <rect class="i-beige" x="300" y="82" width="56" height="6" rx="3"/>
+              <rect class="i-beige" x="300" y="96" width="44" height="6" rx="3"/>
+              <rect class="i-beige" x="300" y="110" width="50" height="6" rx="3"/>
+              <rect class="i-beige" x="300" y="124" width="38" height="6" rx="3"/>
+              <rect class="i-light" x="300" y="146" width="56" height="10" rx="5"/>
+              <g class="i-navy">
+                <rect x="302" y="176" width="3" height="40"/><rect x="309" y="176" width="6" height="40"/><rect x="319" y="176" width="2" height="40"/>
+                <rect x="325" y="176" width="5" height="40"/><rect x="334" y="176" width="3" height="40"/><rect x="341" y="176" width="6" height="40"/><rect x="350" y="176" width="3" height="40"/>
+              </g>
+              <circle class="i-blue" cx="60" cy="245" r="14"/><circle class="i-light" cx="96" cy="245" r="14"/><circle class="i-beige" cx="132" cy="245" r="14"/>
+            </svg>
+          </div>
+          <div class="col-lg-6">
+            <svg class="logo-360-lg mb-3" viewBox="28 122 160 40" role="img" aria-label="Logotipo FOE 360 grados">
+              <use href="#foe-mark"/><use href="#foe-360"/>
+            </svg>
+            <h3 class="fw-bold titulo-seccion">Punto de venta e inventario para tu negocio</h3>
+            <p class="text-body-secondary">Una sola plataforma para vender, controlar existencias en varias bodegas, registrar compras y emitir facturas con el formato fiscal de Honduras.</p>
+            <ul class="list-unstyled text-body-secondary">
+              <li class="mb-1">✔ Ventas y facturación</li>
+              <li class="mb-1">✔ Inventario multibodega</li>
+              <li class="mb-1">✔ Compras y proveedores</li>
+              <li class="mb-1">✔ Usuarios con roles y permisos</li>
+            </ul>
+            <span class="badge text-bg-warning">En desarrollo</span>
+          </div>
+        </div>
+
+        <!-- Pesajes -->
+        <div class="row align-items-center g-5 mb-5 flex-lg-row-reverse">
+          <div class="col-lg-6">
+            <!-- Ilustración: báscula y camión -->
+            <svg class="ill" viewBox="0 0 400 300" role="img" aria-label="Ilustración de un camión sobre una báscula con un indicador de peso">
+              <rect class="i-bg" width="400" height="300" rx="24"/>
+              <rect class="i-panel" x="260" y="40" width="100" height="72" rx="10"/>
+              <path class="i-line" d="M280 92a30 30 0 0 1 60 0"/>
+              <path class="i-line-navy" d="M310 92 326 70"/>
+              <circle class="i-navy" cx="310" cy="92" r="4"/>
+              <rect class="i-navy" x="30" y="214" width="340" height="16" rx="8"/>
+              <rect class="i-beige" x="46" y="206" width="308" height="10" rx="5"/>
+              <rect class="i-blue" x="58" y="120" width="140" height="82" rx="8"/>
+              <rect class="i-light" x="66" y="130" width="124" height="10" rx="5"/>
+              <path class="i-navy" d="M204 148h44l24 28v26h-68z"/>
+              <path class="i-white" d="M214 156h28l14 18h-42z"/>
+              <circle class="i-navy" cx="90" cy="210" r="16"/><circle class="i-white" cx="90" cy="210" r="6"/>
+              <circle class="i-navy" cx="150" cy="210" r="16"/><circle class="i-white" cx="150" cy="210" r="6"/>
+              <circle class="i-navy" cx="248" cy="210" r="16"/><circle class="i-white" cx="248" cy="210" r="6"/>
+              <rect class="i-panel" x="40" y="246" width="320" height="30" rx="8"/>
+              <rect class="i-light" x="52" y="256" width="90" height="10" rx="5"/>
+              <rect class="i-beige" x="152" y="256" width="60" height="10" rx="5"/>
+              <rect class="i-blue" x="290" y="256" width="58" height="10" rx="5"/>
+            </svg>
+          </div>
+          <div class="col-lg-6">
+            <p class="etiqueta mb-2">Industria</p>
+            <h3 class="fw-bold titulo-seccion">Sistema de pesajes y recepción</h3>
+            <p class="text-body-secondary">Control de camiones, pesadas y recepción de mercadería con reglas de negocio validadas en la base de datos, reportes y trazabilidad por usuario.</p>
+            <ul class="list-unstyled text-body-secondary">
+              <li class="mb-1">✔ Registro de pesadas en vivo</li>
+              <li class="mb-1">✔ Validación de recepciones por camión</li>
+              <li class="mb-1">✔ Catálogos de productos y proveedores</li>
+              <li class="mb-1">✔ Seguridad por roles</li>
+            </ul>
+            <span class="badge text-bg-warning">En desarrollo</span>
+          </div>
+        </div>
+
+        <!-- Móvil -->
+        <div class="row align-items-center g-5">
+          <div class="col-lg-6">
+            <!-- Ilustración: aplicación móvil -->
+            <svg class="ill" viewBox="0 0 400 300" role="img" aria-label="Ilustración de una aplicación móvil con lista de ventas y gráfica">
+              <rect class="i-bg" width="400" height="300" rx="24"/>
+              <rect class="i-navy" x="140" y="20" width="120" height="260" rx="22"/>
+              <rect class="i-panel" x="148" y="34" width="104" height="232" rx="14"/>
+              <rect class="i-navy" x="184" y="26" width="32" height="5" rx="2.5"/>
+              <rect class="i-blue" x="156" y="46" width="88" height="48" rx="10"/>
+              <polyline class="i-line" style="stroke:#fff" points="164,84 180,70 196,78 212,60 236,66"/>
+              <rect class="i-beige" x="156" y="104" width="88" height="34" rx="8"/>
+              <circle class="i-light" cx="172" cy="121" r="8"/>
+              <rect class="i-navy" x="186" y="114" width="46" height="6" rx="3"/><rect class="i-light" x="186" y="124" width="30" height="6" rx="3"/>
+              <rect class="i-beige" x="156" y="146" width="88" height="34" rx="8"/>
+              <circle class="i-blue" cx="172" cy="163" r="8"/>
+              <rect class="i-navy" x="186" y="156" width="46" height="6" rx="3"/><rect class="i-light" x="186" y="166" width="30" height="6" rx="3"/>
+              <rect class="i-beige" x="156" y="188" width="88" height="34" rx="8"/>
+              <circle class="i-navy" cx="172" cy="205" r="8"/>
+              <rect class="i-navy" x="186" y="198" width="46" height="6" rx="3"/><rect class="i-light" x="186" y="208" width="30" height="6" rx="3"/>
+              <rect class="i-light" x="156" y="232" width="88" height="22" rx="11"/>
+              <circle class="i-light" cx="80" cy="90" r="22"/><circle class="i-beige" cx="330" cy="200" r="28"/>
+              <path class="i-line-navy" d="M70 90h20M80 80v20"/>
+              <path class="i-line-navy" d="M320 200l8 8 14-16"/>
+            </svg>
+          </div>
+          <div class="col-lg-6">
+            <p class="etiqueta mb-2">Móvil</p>
+            <h3 class="fw-bold titulo-seccion">Aplicación móvil para tu operación</h3>
+            <p class="text-body-secondary">La versión móvil de nuestros sistemas comparte los mismos datos y reglas de seguridad, para consultar y operar desde cualquier lugar.</p>
+            <ul class="list-unstyled text-body-secondary">
+              <li class="mb-1">✔ Misma base de datos y permisos que el sistema de escritorio</li>
+              <li class="mb-1">✔ Consultas y ventas en campo</li>
+              <li class="mb-1">✔ Diseño pensado para pantallas pequeñas</li>
+            </ul>
+            <span class="badge text-bg-secondary">En planificación</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Gobernanza de IA ===== -->
+    <section id="gobernanza" class="py-5">
+      <div class="container py-lg-4">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-5">
+            <!-- Ilustración: gobernanza de IA -->
+            <svg class="ill" viewBox="0 0 400 300" role="img" aria-label="Ilustración de un chip de inteligencia artificial con una marca de verificación">
+              <rect class="i-bg" width="400" height="300" rx="24"/>
+              <g class="i-line">
+                <path d="M170 110V70M200 110V60M230 110V70M170 190v40M200 190v50M230 190v40M110 140H70M110 170H60M290 140h40M290 170h50"/>
+              </g>
+              <circle class="i-light" cx="170" cy="62" r="8"/><circle class="i-blue" cx="200" cy="52" r="8"/><circle class="i-light" cx="230" cy="62" r="8"/>
+              <circle class="i-blue" cx="170" cy="238" r="8"/><circle class="i-light" cx="200" cy="248" r="8"/><circle class="i-blue" cx="230" cy="238" r="8"/>
+              <circle class="i-light" cx="62" cy="140" r="8"/><circle class="i-blue" cx="52" cy="170" r="8"/>
+              <circle class="i-light" cx="338" cy="140" r="8"/><circle class="i-blue" cx="348" cy="170" r="8"/>
+              <rect class="i-navy" x="110" y="110" width="180" height="80" rx="16"/>
+              <rect class="i-blue" x="124" y="122" width="152" height="56" rx="10"/>
+              <text x="200" y="158" text-anchor="middle" font-family="Figtree, sans-serif" font-weight="700" font-size="28" fill="#fff">IA</text>
+              <circle class="i-white" cx="290" cy="110" r="26"/>
+              <circle class="i-light" cx="290" cy="110" r="22"/>
+              <path class="i-line" style="stroke:#fff;stroke-width:5" d="m279 110 8 8 14-16"/>
+            </svg>
+          </div>
+          <div class="col-lg-7">
+            <p class="etiqueta mb-2">Gobernanza de IA</p>
+            <h2 class="fw-bold titulo-seccion">Usa la inteligencia artificial con reglas claras</h2>
+            <p class="text-body-secondary">Ayudamos a las empresas a definir cómo, cuándo y con qué datos se usa la IA, para ganar productividad sin perder el control.</p>
+            <ol class="list-unstyled my-4">
+              <li class="d-flex gap-3 mb-3"><span class="paso-num">1</span><div><strong>Diagnóstico</strong><br><span class="text-body-secondary">Revisamos qué herramientas de IA se usan hoy y qué riesgos existen.</span></div></li>
+              <li class="d-flex gap-3 mb-3"><span class="paso-num">2</span><div><strong>Políticas</strong><br><span class="text-body-secondary">Redactamos reglas de uso, manejo de datos y responsabilidades.</span></div></li>
+              <li class="d-flex gap-3 mb-3"><span class="paso-num">3</span><div><strong>Capacitación</strong><br><span class="text-body-secondary">Formamos a tu equipo para aplicarlas en el día a día.</span></div></li>
+              <li class="d-flex gap-3"><span class="paso-num">4</span><div><strong>Seguimiento</strong><br><span class="text-body-secondary">Revisamos el cumplimiento y ajustamos las políticas.</span></div></li>
+            </ol>
+
+            <div class="accordion" id="faqGobernanza">
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">¿Qué es la gobernanza de IA?</button>
+                </h3>
+                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqGobernanza">
+                  <div class="accordion-body">Es el conjunto de políticas, roles y controles que definen cómo una organización usa la inteligencia artificial de forma segura, ética y alineada con sus objetivos.</div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">¿Mi empresa es muy pequeña para necesitarla?</button>
+                </h3>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqGobernanza">
+                  <div class="accordion-body">No. Si tu equipo ya usa herramientas de IA, conviene tener reglas básicas sobre qué información se puede compartir con ellas. Adaptamos el alcance al tamaño de tu empresa.</div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">¿Qué recibo al final?</button>
+                </h3>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqGobernanza">
+                  <div class="accordion-body">Un diagnóstico, un documento de políticas listo para aplicar y una sesión de capacitación para tu equipo.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Cómo trabajamos ===== -->
+    <section id="metodo" class="py-5 seccion-suave">
+      <div class="container py-lg-4">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-7 order-2 order-lg-1">
+            <p class="etiqueta mb-2">Cómo trabajamos</p>
+            <h2 class="fw-bold titulo-seccion">Seguridad desde el diseño</h2>
+            <p class="text-body-secondary">Aplicamos prácticas DevSecOps en cada proyecto: la seguridad y la calidad se revisan durante el desarrollo, no al final.</p>
+            <div class="row g-3">
+              <div class="col-sm-6"><div class="card h-100"><div class="card-body"><h3 class="h6">Control de versiones</h3><p class="mb-0 small text-body-secondary">Repositorios privados y cambios revisados antes de integrarse.</p></div></div></div>
+              <div class="col-sm-6"><div class="card h-100"><div class="card-body"><h3 class="h6">Revisión automática</h3><p class="mb-0 small text-body-secondary">Detección de secretos expuestos y dependencias vulnerables.</p></div></div></div>
+              <div class="col-sm-6"><div class="card h-100"><div class="card-body"><h3 class="h6">Pruebas</h3><p class="mb-0 small text-body-secondary">Reglas de negocio cubiertas con pruebas automáticas.</p></div></div></div>
+              <div class="col-sm-6"><div class="card h-100"><div class="card-body"><h3 class="h6">Documentación</h3><p class="mb-0 small text-body-secondary">Decisiones y avances registrados para que nada dependa de la memoria.</p></div></div></div>
+            </div>
+          </div>
+          <div class="col-lg-5 order-1 order-lg-2">
+            <!-- Ilustración: ciberseguridad -->
+            <svg class="ill" viewBox="0 0 400 300" role="img" aria-label="Ilustración de un escudo con un candado">
+              <rect class="i-bg" width="400" height="300" rx="24"/>
+              <circle class="i-panel" cx="200" cy="150" r="110"/>
+              <path class="i-navy" d="M200 52 282 84v62c0 50-36 82-82 102-46-20-82-52-82-102V84z"/>
+              <path class="i-blue" d="M200 66 268 92v54c0 40-28 68-68 86-40-18-68-46-68-86V92z"/>
+              <rect class="i-white" x="170" y="140" width="60" height="50" rx="8"/>
+              <path class="i-line-navy" style="stroke-width:8" d="M180 140v-14a20 20 0 0 1 40 0v14"/>
+              <circle class="i-navy" cx="200" cy="162" r="7"/><rect class="i-navy" x="197" y="164" width="6" height="14" rx="3"/>
+              <circle class="i-light" cx="68" cy="70" r="10"/><circle class="i-beige" cx="340" cy="230" r="14"/><circle class="i-light" cx="340" cy="70" r="6"/>
+              <path class="i-line" d="M60 230h40M340 130h30"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Nosotros ===== -->
+    <section id="nosotros" class="py-5">
+      <div class="container py-lg-4 text-center">
+        <p class="etiqueta mb-2">Nosotros</p>
+        <h2 class="fw-bold titulo-seccion">FOE: tres fundadores, una sola visión</h2>
+        <p class="text-body-secondary mx-auto mb-5" style="max-width: 40rem;">
+          El nombre de la empresa nace de la inicial de cada fundador. Somos un equipo hondureño que cree en la tecnología útil, segura y bien documentada.
+        </p>
+        <div class="row g-4 justify-content-center">
+          <div class="col-sm-4 col-lg-3">
+            <div class="card h-100 tarjeta"><div class="card-body py-4"><div class="inicial-foe" aria-hidden="true">F</div><h3 class="h5 mt-3 mb-0">Fernando</h3></div></div>
+          </div>
+          <div class="col-sm-4 col-lg-3">
+            <div class="card h-100 tarjeta"><div class="card-body py-4"><div class="inicial-foe" aria-hidden="true">O</div><h3 class="h5 mt-3 mb-0">Osmany</h3></div></div>
+          </div>
+          <div class="col-sm-4 col-lg-3">
+            <div class="card h-100 tarjeta"><div class="card-body py-4"><div class="inicial-foe" aria-hidden="true">E</div><h3 class="h5 mt-3 mb-0">Emanuel</h3></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Contacto ===== -->
+    <section id="contacto" class="py-5 seccion-suave">
+      <div class="container py-lg-4">
+        <div class="row g-5">
+          <div class="col-lg-5">
+            <p class="etiqueta mb-2">Contacto</p>
+            <h2 class="fw-bold titulo-seccion">Cuéntanos qué necesitas</h2>
+            <p class="text-body-secondary">Escríbenos y te responderemos lo antes posible.</p>
+            <ul class="list-unstyled">
+              <li class="mb-2"><strong>Correo:</strong> <a href="mailto:fbarahona280@gmail.com">fbarahona280@gmail.com</a></li>
+              <li class="mb-2"><strong>Teléfono:</strong> <a href="tel:+50494807460">+504 9480-7460</a></li>
+              <li class="mb-2"><strong>Ubicación:</strong> Tegucigalpa, Honduras</li>
+              <li class="mb-2"><strong>GitHub:</strong> <a href="https://github.com/RedFer855" target="_blank" rel="noopener noreferrer">github.com/RedFer855</a></li>
+            </ul>
+            <a class="btn btn-success" href="https://wa.me/50494807460?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20SYS%20FOE" target="_blank" rel="noopener noreferrer">Escribir por WhatsApp</a>
+          </div>
+          <div class="col-lg-7">
+            <form id="form-contacto" class="card card-body needs-validation" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input type="text" class="form-control" id="nombre" autocomplete="name" required minlength="3" aria-describedby="nombre-fb">
+                  <div id="nombre-fb" class="invalid-feedback">Escribe tu nombre (mínimo 3 letras).</div>
+                </div>
+                <div class="col-md-6">
+                  <label for="correo" class="form-label">Correo</label>
+                  <input type="email" class="form-control" id="correo" autocomplete="email" required aria-describedby="correo-fb">
+                  <div id="correo-fb" class="invalid-feedback">Escribe un correo válido.</div>
+                </div>
+                <div class="col-12">
+                  <label for="asunto" class="form-label">Me interesa</label>
+                  <select class="form-select" id="asunto" required aria-describedby="asunto-fb">
+                    <option value="" selected disabled>Selecciona una opción</option>
+                    <option>Desarrollo de sistemas</option>
+                    <option>Gobernanza de IA</option>
+                    <option>Ciberseguridad</option>
+                    <option>Redes e infraestructura</option>
+                    <option>Otro</option>
+                  </select>
+                  <div id="asunto-fb" class="invalid-feedback">Elige un tema.</div>
+                </div>
+                <div class="col-12">
+                  <label for="mensaje" class="form-label">Mensaje</label>
+                  <textarea class="form-control" id="mensaje" rows="4" required minlength="10" aria-describedby="mensaje-fb"></textarea>
+                  <div id="mensaje-fb" class="invalid-feedback">Cuéntanos un poco más (mínimo 10 caracteres).</div>
+                </div>
+                <div class="col-12">
+                  <button class="btn btn-foe" type="submit">Enviar mensaje</button>
+                  <p class="form-text mb-0 mt-2">Se abrirá tu aplicación de correo con el mensaje listo para enviar.</p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-4 border-top">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-body-secondary">
+      <span>&copy; <span id="anio">2026</span> SYS FOE &middot; Systems and Solutions FOE &middot; Tegucigalpa, Honduras</span>
+      <span><a href="https://github.com/RedFer855" target="_blank" rel="noopener noreferrer">GitHub</a> &middot; <a href="mailto:fbarahona280@gmail.com">Correo</a></span>
+    </div>
+  </footer>
+
+  <button id="volver-arriba" class="btn btn-foe rounded-circle position-fixed bottom-0 end-0 m-3 d-none p-0" type="button" aria-label="Volver arriba">&uarr;</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <!-- Vite compila src/main.ts (y el CSS que importa) -->
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
